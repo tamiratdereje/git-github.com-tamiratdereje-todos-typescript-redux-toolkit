@@ -1,7 +1,6 @@
 
-export default interface User {
+export default interface LoginModel {
     email: string;
-    name: string;
     password: string | null;
 }
 
