@@ -22,7 +22,7 @@ export const fetchTodos = createAsyncThunk(
   async (data, thunkApi) => {
     try {
       const response = await todoService.fetchTodos();
-      
+
       return await response.json();
     } catch (error: any) {
       return thunkApi.rejectWithValue({ error: error.message });
@@ -34,14 +34,20 @@ export const addTodo = createAsyncThunk(
   "todos/addTodo",
   async (todo: Todo, thunkApi) => {
     try {
-      const response = await fetch("http://localhost:3001/todos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(todo),
-      });
-      return await response.json();
+      const response = await todoService.addTodo(todo);
+      const todos: Todo = {
+        id: response.data.id,
+        description: response.data.description,
+        category: response.data.category,
+        priority: response.data.priority,
+        dueDate: response.data.dueDate,
+        status: response.data.status,
+        createdAt: response.data.createdAt,
+        notes: "response.data.notes"??""
+      };
+      console.log(todos);
+         
+      return todos;
     } catch (error: any) {
       return thunkApi.rejectWithValue({ error: error.message });
     }

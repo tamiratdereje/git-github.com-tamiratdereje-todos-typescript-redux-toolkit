@@ -6,7 +6,7 @@ const { protect, authorize } = require('../../middleware/auth.js')
 const todoController = require("./contoller.js");
 
 router.route("/")
-        .post(todoController.addTodo)
+        .post(protect, todoController.addTodo)
         .get(protect, todoController.getAllTodos)
 
 router.route("/:id")
