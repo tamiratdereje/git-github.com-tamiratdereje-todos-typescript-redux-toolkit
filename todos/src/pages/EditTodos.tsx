@@ -2,6 +2,6 @@ import React from 'react'
 
 export const EditTodos = () => {
   return (
-    <div>EditTodos</div>
+    <div className='flex-1'>EditTodos</div>
   )
 }

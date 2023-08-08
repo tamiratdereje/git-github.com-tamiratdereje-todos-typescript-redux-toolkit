@@ -7,6 +7,8 @@ import { Header } from '../components/Header';
 import { About } from '../pages/About';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import { Dashboard } from '../pages/Dashboard';
+import { TodosMain } from '../pages/TodosMain';
+import { Footer } from '../components/Footer';
 
 
 function App() {
@@ -14,7 +16,7 @@ function App() {
   return (
     <>
     <Router>
-    <div className="App">
+    <div className="App flex flex-col min-h-screen">
       <Header/>
       <Routes>
         <Route path='/' element= {<Dashboard/>}/>
@@ -23,9 +25,10 @@ function App() {
         <Route path='/register' element= {<Register/>}/>
         <Route path='/logout' element= {<Login/>}/>
         <Route path='/about' element= {<About/>}/>
-
+        <Route path='/todos' element= {<TodosMain/>}/>
 
       </Routes>
+      <Footer/>
     </div>
     </Router>
     </>

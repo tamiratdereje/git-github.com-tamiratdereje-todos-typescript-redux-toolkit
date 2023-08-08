@@ -2,16 +2,23 @@
 import axios from "axios";
 import User from "../../common/models/userModel";
 import LoginModel from "../../common/models/loginModel";
-const API_URL = "http://localhost:3001/user";
+const API_URL = "https://todos-type.onrender.com/api/v1/user/";
 const addUser = async (user: User) => {
     const response = await axios.post(API_URL, user);
+    console.log("user about to add");
+    console.log(response.data);
+    console.log("user added");
     return response.data;
     };
 const loginUser = async (authModel: LoginModel) => {
-    const response = await axios.post(API_URL, authModel);
+    console.log("user about to login");
+
+    const response = await axios.post(API_URL + 'login', authModel);
+    console.log("user after login");
     if (response.data) {
         localStorage.setItem("user", JSON.stringify(response.data));
     }
+    console.log(response.data);
     return response.data;
     };
 
