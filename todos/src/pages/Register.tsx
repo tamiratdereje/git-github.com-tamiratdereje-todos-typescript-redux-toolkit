@@ -18,18 +18,18 @@ export const Register: FC = () => {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error, data, isSuccess } = useAppSelector(
+  const { loading, error, auth, isSuccess } = useAppSelector(
     (state) => state.user
   );
   useEffect(() => {
-    if (isSuccess || data) {
+    if (isSuccess || auth) {
       navigate("/login");
     } else if (error) {
         console.log("everything is fine");
       console.log(error);
     }
     dispatch(reset());
-  }, [isSuccess, navigate, error, dispatch, data]);
+  }, [isSuccess, navigate, error, dispatch, auth]);
 
   const { name, email, password, passwordConfirmation } = formData;
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

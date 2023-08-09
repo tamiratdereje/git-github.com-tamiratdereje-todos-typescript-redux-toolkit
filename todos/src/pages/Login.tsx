@@ -17,11 +17,11 @@ export const Login: FC = () => {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error, data, isSuccess } = useAppSelector(
+  const { loading, error, auth, isSuccess } = useAppSelector(
     (state) => state.user
   );
   useEffect(() => {
-    console.log(data);
+    console.log(auth);
     console.log(isSuccess);
     if (isSuccess) {
       navigate("/");
@@ -30,7 +30,7 @@ export const Login: FC = () => {
       console.log(error);
     }
     dispatch(reset());
-  }, [isSuccess, navigate, error, dispatch, data]);
+  }, [isSuccess, navigate, error, dispatch, auth]);
 
   const { email, password } = formData;
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

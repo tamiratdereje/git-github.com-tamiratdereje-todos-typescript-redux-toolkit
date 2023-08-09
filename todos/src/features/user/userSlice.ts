@@ -28,6 +28,7 @@ export const login = createAsyncThunk(
         email: res.data.email,
         password: res.data.password,
         id: res.data.id,
+        token: res.token
       };
       console.log("user abdddd");
       console.log(user);
@@ -54,6 +55,7 @@ export const register = createAsyncThunk(
         email: res.data.email,
         password: res.data.password,
         id: res.data.id,
+        token: res.token
       };
       console.log("user abdddd");
       console.log(user);
@@ -77,14 +79,14 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 interface UserState {
   loading: boolean;
   error: string | null;
-  data: any;
+  auth: any;
   isSuccess: boolean;
 }
 
 const initialState: UserState = {
   loading: false,
   error: null,
-  data: user ? user : null,
+  auth: user ? user : null,
   isSuccess: false,
 };
 
@@ -105,7 +107,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserById.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.auth = action.payload;
       })
       .addCase(fetchUserById.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
@@ -116,7 +118,7 @@ const userSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.auth = action.payload;
         state.isSuccess = true;
       })
       .addCase(login.rejected, (state, action: PayloadAction<any>) => {
@@ -129,7 +131,7 @@ const userSlice = createSlice({
       .addCase(register.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
         console.log(action.payload);
-        state.data = null;
+        state.auth = null;
       })
       .addCase(register.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
@@ -140,7 +142,7 @@ const userSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = null;
+        state.auth = null;
         state.isSuccess = true;
       })
       .addCase(logout.rejected, (state, action: PayloadAction<any>) => {

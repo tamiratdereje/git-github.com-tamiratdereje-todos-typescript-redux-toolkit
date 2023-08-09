@@ -38,6 +38,7 @@ const deleteUser = async (id: string) => {
 }
 const logout = () => {
     localStorage.removeItem("user");
+    console.log("user logged out");
     };
 
 
