@@ -4,11 +4,12 @@ import {Login} from '../pages/Login';
 import { Register } from '../pages/Register';
 import { Profile } from '../pages/Profile';
 import { Header } from '../components/Header';
-import { About } from '../pages/About';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import { Dashboard } from '../pages/Dashboard';
 import { TodosMain } from '../pages/TodosMain';
 import { Footer } from '../components/Footer';
+import { TodoDetail } from '../pages/TodoDetail';
+import { CreateTodo } from '../pages/CreateTodo';
 
 
 function App() {
@@ -24,9 +25,11 @@ function App() {
         <Route path='/Profile' element= {<Profile/>}/>
         <Route path='/register' element= {<Register/>}/>
         <Route path='/logout' element= {<Login/>}/>
-        <Route path='/about' element= {<About/>}/>
         <Route path='/todos' element= {<TodosMain/>}/>
-
+        <Route path='/todos/:id' element= {<TodoDetail/>}/>
+        <Route path='*' element= {<Dashboard/>}/>
+        <Route path='/createTodos' element={<CreateTodo/>}/>
+        <Route path='/todos/:id/edit' element={<CreateTodo/>}/>
       </Routes>
       <Footer/>
     </div>

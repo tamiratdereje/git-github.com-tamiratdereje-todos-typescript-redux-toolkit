@@ -19,13 +19,16 @@ const initialState: TodoState = {
   data: [],
   isSuccess: false
 };
+const user: any = JSON.parse(localStorage.getItem("user") as string);
 
 export const fetchTodos = createAsyncThunk(
   "todos/fetchTodos",
   async (data, thunkApi) => {
     try {
       const state = thunkApi.getState() as RootState;
-      const token = state.user.auth.token;
+      // const token = state.user.auth.token;
+      const token = user.token;
+
       
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -64,7 +67,8 @@ export const addTodo = createAsyncThunk(
   async (todo: Todo, thunkApi) => {
     try {
       const state = thunkApi.getState() as RootState;
-      const token = state.user.auth.token;
+      // const token = state.user.auth.token;
+      const token = user.token;
 
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -91,6 +95,72 @@ export const addTodo = createAsyncThunk(
   }
 );
 
+export const updateTodo = createAsyncThunk(
+  "todos/updateTodo",
+  async (todo: Todo, thunkApi) => {
+    try {
+      const state = thunkApi.getState() as RootState;
+      // const token = state.user.auth.token;
+      const token = user.token;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      };
+      const response = await todoService.updateTodo(
+        todo.id,
+        todo,
+        headers
+      );
+      const todos: Todo = {
+        id: response.data.id,
+        description: response.data.description,
+        category: response.data.category,
+        priority: response.data.priority,
+        dueDate: response.data.dueDate,
+        status: response.data.status,
+        createdAt: response.data.createdAt,
+        notes: response.data.notes??""
+      };
+      return todos;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
+export const deleteTodo = createAsyncThunk(
+  "todos/deleteTodo",
+  async (id: string, thunkApi) => {
+    try {
+      const state = thunkApi.getState() as RootState;
+      // const token = state.user.auth.token;
+      const token = user.token;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      };
+      const response = await todoService.deleteTodo(
+        id,
+        headers
+      );
+      const todos: Todo = {
+        id: response.data.id,
+        description: response.data.description,
+        category: response.data.category,
+        priority: response.data.priority,
+        dueDate: response.data.dueDate,
+        status: response.data.status,
+        createdAt: response.data.createdAt,
+        notes: response.data.notes??""
+      };
+      return todos;
+
+    } catch (error: any) {
+      return thunkApi.rejectWithValue({ error: error.message });
+    }
+  }
+);
+
 const todosSlice = createSlice({
   name: "todos",
   initialState,
@@ -101,34 +171,61 @@ const todosSlice = createSlice({
       state.isSuccess = false;
     },
   },
-  extraReducers: {
-    [fetchTodos.pending.type]: (state) => {
+  extraReducers: (builder) => {
+    builder
+    .addCase(fetchTodos.pending, (state) => {
       state.loading = true;
-    },
-    [fetchTodos.fulfilled.type]: (state, action: PayloadAction<any>) => {
+    })
+    .addCase(fetchTodos.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data = action.payload;
+      state.isSuccess = true
+
+    })
+    .addCase(fetchTodos.rejected, (state, action: PayloadAction<any>) => {
       console.log("action.payload");
       console.log(action.payload);  
 
       state.loading = false;
-      state.data = action.payload;
-      state.isSuccess = true
-    },
-    [fetchTodos.rejected.type]: (state, action: PayloadAction<any>) => {
-      state.loading = false;
       state.error = action.payload;
-    },
-    [addTodo.pending.type]: (state) => {
+    })
+    .addCase(addTodo.pending, (state) => {
       state.loading = true;
-    },
-    [addTodo.fulfilled.type]: (state, action: PayloadAction<any>) => {
+    })
+    .addCase(addTodo.fulfilled, (state, action) => {
       state.loading = false;
       state.data = [...state.data, action.payload];
       state.isSuccess = true
-    },
-    [addTodo.rejected.type]: (state, action: PayloadAction<any>) => {
+    })
+    .addCase(addTodo.rejected, (state, action: PayloadAction<any>) => {
       state.loading = false;
       state.error = action.payload;
-    },
+    })
+    .addCase(deleteTodo.pending, (state, action)=>{
+      state.loading = true;
+    })
+    .addCase(deleteTodo.fulfilled, (state, action)=>{
+      state.loading = false;
+      state.data = state.data.filter((todo)=>todo.id !== action.payload.id);
+      state.isSuccess = true
+    })
+    .addCase(deleteTodo.rejected, (state, action: PayloadAction<any>)=>{
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(updateTodo.pending, (state, action)=>{
+      state.loading = true;
+    })
+    .addCase(updateTodo.fulfilled, (state, action)=>{
+      state.loading = false;
+      state.data = state.data.map((todo)=>todo.id === action.payload.id ? action.payload : todo);
+      state.isSuccess = false
+    })
+    .addCase(updateTodo.rejected, (state, action: PayloadAction<any>)=>{
+      state.loading = false;
+      state.error = action.payload;
+    })
+
   },
 });
 export const { reset } = todosSlice.actions;

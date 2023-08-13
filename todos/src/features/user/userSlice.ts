@@ -3,8 +3,6 @@ import authServices from "./userServices";
 import LoginModel from "../../common/models/loginModel";
 import User from "../../common/models/userModel";
 
-// const user = JSON.parse(localStorage.getItem('user')??'');
-const user: any = JSON.parse(localStorage.getItem("user") as string);
 
 export const fetchUserById = createAsyncThunk(
   "users/fetchById",
@@ -75,6 +73,7 @@ export const register = createAsyncThunk(
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authServices.logout();
 });
+const user: any = JSON.parse(localStorage.getItem("user") as string);
 
 interface UserState {
   loading: boolean;
