@@ -50,8 +50,8 @@ export const Register: FC = () => {
   }
   return <div>
     
-    <div className="flex flex-col flex-1 items-center justify-center min-h-screen py-2 dark:bg-gray-900">
-        <div className="flex flex-col justify-center w-full max-w-sm px-4 py-8 dark:bg-gray-800 shadow-lg rounded-lg">
+    <div className="flex flex-col flex-1 items-center justify-center min-h-screen py-2 bg-gray-900">
+        <div className="flex flex-col justify-center w-full max-w-sm px-4 py-8 bg-gray-800 shadow-lg rounded-lg">
             <div className="flex flex-col items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-tr from-primary-700 to-primary-800">
                 <svg className="w-8 h-8 text-white" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M27.5 16C27.5 21.7467 22.7467 26.5 17 26.5C11.2533 26.5 6.5 21.7467 6.5 16C6.5 10.2533 11.2533 5.5 17 5.5C22.7467 5.5 27.5 10.2533 27.5 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
