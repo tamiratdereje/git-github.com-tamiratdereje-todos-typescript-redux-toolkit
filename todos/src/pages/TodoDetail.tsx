@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../common/hooks/useTypedSelector";
 import { useEffect, useState } from "react";
 import { deleteTodo, fetchTodos, reset } from "../features/todos/todosSlice";
+import { Spinner } from "../components/Spinner";
 
 export const TodoDetail = () => {
   const { id } = useParams();
@@ -44,7 +45,7 @@ export const TodoDetail = () => {
     <div className="flex-1 items-center p-10  bg-gray-900 justify-center">
       {todo === undefined ? (
         <div className="flex-1 items-center p-10 text-xs text-white  bg-gray-900">
-          loading...
+          <Spinner />
         </div>
       ) : (
         <div className="h-full flex items-center m-auto w-1/3 justify-center">

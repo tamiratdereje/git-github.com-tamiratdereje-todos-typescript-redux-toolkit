@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Spinner } from "../components/Spinner";
 import {
   useAppDispatch,
   useAppSelector,
@@ -31,8 +32,8 @@ export const TodosMain = () => {
 
   if (loading) {
     return (
-      <div className="flex-1 items-center p-10 text-xs text-white  bg-gray-900">
-        loading...
+      <div className="flex-1 items-center m-auto p-10 text-xs text-white  bg-gray-900">
+        <Spinner/>
       </div>
     );
   }

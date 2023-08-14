@@ -1,4 +1,5 @@
 import React from "react";
+import { Spinner } from "../components/Spinner";
 import {
   useAppDispatch,
   useAppSelector,
@@ -46,7 +47,7 @@ export const Register: FC = () => {
   };
 
   if (loading) {
-    return <div>loading...</div>;
+    return <div><Spinner/></div>;
   }
   return <div>
     

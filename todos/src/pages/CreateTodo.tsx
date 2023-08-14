@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { addTodo, reset, updateTodo } from "../features/todos/todosSlice";
 import Todo from "../common/models/todoModel";
 import { useParams } from "react-router-dom";
+import { Spinner } from "../components/Spinner";
 
 const options = {
   title: "Demo Title",
@@ -60,9 +61,7 @@ export const CreateTodo = () => {
   const { description, category, status, priority } = formData;
   useEffect(() => {
     if (id && !updateT) {
-      console.log("editing todo");
       if (todo) {
-        console.log("todo found");
         setFormData({
           description: todo.description,
           category: todo.category,
@@ -73,17 +72,14 @@ export const CreateTodo = () => {
       }
     }
     if (!auth) {
-      console.log("not authenticated");
       navigate("/login");
     }
     if (error) {
-      console.log("error while creating todo");
       return () => {
         dispatch(reset());
       };
     }
     if (updateT) {
-      console.log("todo updated successfully");
       dispatch(reset());    
       navigate(`/todos/${id}`);
       setUpdateT(false);
@@ -92,7 +88,6 @@ export const CreateTodo = () => {
       };
     }
     if (isSuccess) {
-      console.log("todo created successfully");
       navigate("/todos");
       return () => {
         dispatch(reset());
@@ -118,7 +113,6 @@ export const CreateTodo = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submitting form");
     if (id) {
       setUpdateT(true);
       dispatch(
@@ -246,7 +240,7 @@ export const CreateTodo = () => {
           </div>
         </div>
         {loading ? (
-          <div>loading...</div>
+          <div><Spinner/></div>
         ) : (
           <div>
             (

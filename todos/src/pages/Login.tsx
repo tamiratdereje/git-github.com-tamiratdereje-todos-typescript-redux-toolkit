@@ -8,6 +8,7 @@ import { FC, useEffect, useState } from "react";
 import { login } from "../features/user/userSlice";
 import { reset } from "../features/user/userSlice";
 import LoginModel from "../common/models/loginModel";
+import { Spinner } from "../components/Spinner";
 
 export const Login: FC = () => {
   const [formData, setFormData] = useState({
@@ -64,7 +65,7 @@ export const Login: FC = () => {
                     <input type="password" name="password" id="password" placeholder="************" className="w-full px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-lg focus:outline-none focus:bg-white focus:ring-0" onChange={onChange} required/>
                 </div>
                 
-                  {loading ? <div>loading...</div> : <button type="submit" className="block w-full px-4 py-2 mt-6 text-sm font-semibold text-center text-white transition duration-200 ease-in bg-blue-600 rounded-lg hover:bg-blue-200 focus:outline-none focus:bg-primary-700">login</button> }
+                  {loading ? <div><Spinner/></div> : <button type="submit" className="block w-full px-4 py-2 mt-6 text-sm font-semibold text-center text-white transition duration-200 ease-in bg-blue-600 rounded-lg hover:bg-blue-200 focus:outline-none focus:bg-primary-700">login</button> }
             </form>
             <hr className="w-full my-6 border-gray-300" />
             <p className="text-sm text-center text-gray-400">Already have an account? <Link to={'/register'}><a href="#" className="text-primary-600 hover:text-primary-100">Create account</a></Link></p>

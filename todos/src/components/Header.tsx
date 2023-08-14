@@ -14,9 +14,6 @@ export const Header = () => {
 
 
   const auth: any = JSON.parse(localStorage.getItem("user") as string);
-  console.log("auth----------------------")
-  console.log(auth);
-  console.log("auth----------------------")
 
   const logOut = () => {
     dispatch(logout());
