@@ -50,7 +50,7 @@ export const Header = () => {
               {auth ? (
                 <Link
                   to={"/Profile"}
-                  className="block py-2 pr-4 pl-3 text-gray-400 border-b border-gray-100 hover:bg-gray-50 lg:border-0 lg:hover:text-primary-700 lg:p-0 lg:hover:text-blue-500  hover:text-blue-500  "
+                  className="block py-2 pr-4 pl-3 text-gray-400 border-b border-gray-100 lg:border-0 lg:hover:text-primary-700 lg:p-0  hover:text-blue-500  "
                 >
                   {auth.data.name}
                 </Link>
