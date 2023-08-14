@@ -196,7 +196,7 @@ export const TodosMain = () => {
             type="button"
             className="flex flex-row w-full px-4 py-2 mt-6 text-sm font-semibold text-center text-white transition duration-200 ease-in bg-blue-600 rounded-lg hover:bg-blue-200 focus:outline-none focus:bg-primary-700"
           >
-            <span className="text-white">
+            <span className="text-white pr-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 text-white"

@@ -146,7 +146,7 @@ export const Dashboard = () => {
             type="button"
             className="text-white flex flex-row bg-blue-700 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2   focus:outline-none "
           >
-            <span className="text-white">
+            <span className="text-white pr-3">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 text-white"
