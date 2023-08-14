@@ -39,7 +39,7 @@ export const Header = () => {
               {auth && location.pathname === "/Profile" ? (
                 <button
                   onClick={logOut}
-                  className="text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none"
+                  className="block pl-3 pr-4 rounded md:border-0 md:hover:text-blue-500 md:p-0 text-white px-4 lg:px-5 py-2 lg:py-2.5 mr-2 hover:text-blue-500"
                 >
                   Log out
                 </button>

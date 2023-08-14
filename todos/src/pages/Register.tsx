@@ -61,20 +61,20 @@ export const Register: FC = () => {
             </div>
             <h2 className="mb-6 text-xl font-semibold text-center text-gray-100">Register</h2>
             <form onSubmit={onSubmit}>
-                <div className="flex items-center justify-between w-full mb-4 space-x-3">
-                    <label htmlFor="firstName" className="text-sm text-gray-100">First name</label>
+                <div className="flex flex-col items-start justify-between w-full mb-4 space-x-3">
+                    <label htmlFor="firstName" className="text-sm ml-3 text-gray-100">First name</label>
                     <input type="text" name="name" id="firstName" placeholder="John" className="w-full px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-lg focus:outline-none focus:bg-white focus:ring-0" onChange={onChange} required/>
                 </div>
-                <div className="flex items-center justify-between w-full mb-4 space-x-3">
-                    <label htmlFor="email" className="text-sm text-gray-100">Email</label>
+                <div className="flex flex-col items-start justify-between w-full mb-4 space-x-3">
+                    <label htmlFor="email" className="text-sm ml-3 text-gray-100">Email</label>
                     <input type="email" name="email" id="email" placeholder="rami@gmail.com" className="w-full px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-lg focus:outline-none focus:bg-white focus:ring-0" onChange={onChange} required/>
                 </div>
-                <div className="flex items-center justify-between w-full mb-4 space-x-3">
-                    <label htmlFor="password" className="text-sm text-gray-100">Password</label>
+                <div className="flex flex-col items-start justify-between w-full mb-4 space-x-3">
+                    <label htmlFor="password" className="text-sm ml-3 text-gray-100">Password</label>
                     <input type="password" name="password" id="password" placeholder="************" className="w-full px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-lg focus:outline-none focus:bg-white focus:ring-0" onChange={onChange} required/>
                 </div>
-                <div className="flex items-center justify-between w-full mb-4 space-x-3">
-                    <label htmlFor="passwordConfirmation" className="text-sm text-gray-100">Confirm Password</label>
+                <div className="flex flex-col items-start justify-between w-full mb-4 space-x-3">
+                    <label htmlFor="passwordConfirmation" className="text-sm ml-3 text-gray-100">Confirm Password</label>
                     <input type="password" name="passwordConfirmation" id="passwordConfirmation" placeholder="************" className="w-full px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-lg focus:outline-none focus:bg-white focus:ring-0" onChange={onChange} required/>
                 </div>
                 <button type="submit" className="block w-full px-4 py-2 mt-6 text-sm font-semibold text-center text-white transition duration-200 ease-in bg-white-600 rounded-lg hover:bg-blue-200 focus:outline-none focus:bg-primary-700 bg-blue-600">Register</button>
