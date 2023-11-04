@@ -1,15 +1,12 @@
 import React from "react";
 import Datepicker from "tailwind-datepicker-react";
-import {
-  useAppSelector,
-  useAppDispatch,
-} from "../common/hooks/useTypedSelector";
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addTodo, reset, updateTodo } from "../features/todos/todosSlice";
-import Todo from "../common/models/todoModel";
+import {Todo} from "../types/todo/todo";
 import { useParams } from "react-router-dom";
 import { Spinner } from "../components/Spinner";
+import { useAddTodoMutation, useGetTodoQuery } from "../features/api/apiSlice";
 
 const options = {
   title: "Demo Title",
@@ -40,15 +37,12 @@ const options = {
 
 export const CreateTodo = () => {
   const navigate = useNavigate();
-  const { auth } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
-  const { loading, error, isSuccess, data } = useAppSelector(
-    (state) => state.todos
-  );
-  const { id } = useParams();
-  let todo: any = data.find((todo) => todo.id === id);
-  console.log(todo);
 
+  const auth  = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const { id } = useParams();
+  const [addTodo, { isLoading, isError, isSuccess: isAddSuccess }] = useAddTodoMutation();
+  const { data: todo, error, loading, isSuccess } = useGetTodoQuery(id);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [formData, setFormData] = useState({
@@ -71,29 +65,8 @@ export const CreateTodo = () => {
         setDate(new Date(todo.dueDate));
       }
     }
-    if (!auth) {
-      navigate("/login");
-    }
-    if (error) {
-      return () => {
-        dispatch(reset());
-      };
-    }
-    if (updateT) {
-      dispatch(reset());    
-      navigate(`/todos/${id}`);
-      setUpdateT(false);
-      return () => {
-        dispatch(reset());
-      };
-    }
-    if (isSuccess) {
-      navigate("/todos");
-      return () => {
-        dispatch(reset());
-      };
-    }
-  }, [auth, navigate, error, dispatch, isSuccess, id, updateT]);
+    
+  },[]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -113,29 +86,27 @@ export const CreateTodo = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (id) {
-      setUpdateT(true);
-      dispatch(
-        updateTodo({
-          id: id,
+    // if (id) {
+    //   setUpdateT(true);
+    //   addTodo({
+    //       id: id,
+    //       description: description,
+    //       category: category,
+    //       status: status,
+    //       priority: priority,
+    //       dueDate: date.toUTCString(),
+    //     } as Todo 
+    //   );
+    // } else {
+      addTodo({
           description: description,
           category: category,
           status: status,
           priority: priority,
           dueDate: date.toUTCString(),
-        } as Todo)
+        } as Todo 
       );
-    } else {
-      dispatch(
-        addTodo({
-          description: description,
-          category: category,
-          status: status,
-          priority: priority,
-          dueDate: date.toUTCString(),
-        } as Todo)
-      );
-    }
+    // }
   };
   return (
     <div className="flex-1 justify-items-center bg-gray-900">

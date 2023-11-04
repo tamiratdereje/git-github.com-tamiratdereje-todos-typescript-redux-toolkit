@@ -1,14 +1,9 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../common/hooks/useTypedSelector";
-import { logout, reset } from "../features/user/userSlice";
+
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const Header = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,8 +11,7 @@ export const Header = () => {
   const auth: any = JSON.parse(localStorage.getItem("user") as string);
 
   const logOut = () => {
-    dispatch(logout());
-    dispatch(reset());
+    localStorage.removeItem("user");
     navigate("/");
 
   };

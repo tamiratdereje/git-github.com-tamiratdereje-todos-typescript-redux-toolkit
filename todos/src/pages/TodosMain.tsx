@@ -1,50 +1,40 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Spinner } from "../components/Spinner";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../common/hooks/useTypedSelector";
+// import {
+//   useAppDispatch,
+//   useAppSelector,
+// } from "../common/hooks/useTypedSelector";
+import { useGetTodosQuery } from "../features/api/apiSlice";
 import { useNavigate } from "react-router-dom";
-import { reset } from "../features/todos/todosSlice";
-import { fetchTodos } from "../features/todos/todosSlice";
-export const TodosMain = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { loading, error, data, isSuccess } = useAppSelector(
-    (state) => state.todos
-  );
-  const { auth } = useAppSelector((state) => state.user);
-  useEffect(() => {
-    if (error) {
-      console.log("error");
-    }
+import { Todo } from "../types/todo/todo";
 
-    if (!auth) {
-      console.log("not authenticated");
-      navigate("/login");
-    }
-    console.log("fetching todos dispatched");
-    dispatch(fetchTodos());
-    return () => {
-      dispatch(reset());
-    };
-  }, [auth, navigate, error, dispatch]);
+export const TodosMain = () => {
+  const navigate = useNavigate();
+ 
+
+  const {
+    data,
+    isLoading: loading,
+    isError,
+    error,
+    isSuccess,
+  } = useGetTodosQuery();
 
   if (loading) {
     return (
-      <div className="flex-1 items-center m-auto p-10 text-xs text-white  bg-gray-900">
-        <Spinner/>
+      <div className="flex-1 p-10 text-xs text-white mx-auto bg-gray-900">
+        <Spinner />
       </div>
     );
   }
-
+if (data && isSuccess)
   return (
     <div className="flex-1 items-center p-10  bg-gray-900">
       <section className="text-gray-400 bg-gray-900 body-font">
         <div className="container flex-1 px-0 py-0 mx-auto ">
           <div className="flex flex-wrap -mx-4 -my-8 justify-items-center">
             {data.length > 0 ? (
-              data.map((todo) => (
+              data.map((todo: Todo) => (
                 <div
                   key={todo.id}
                   className="py-8 px-4 lg:w-1/3 border-l-2 border-l-lime-600 border-r-dashed mx-auto w-1/2 border-r-lime-600	my-4 rounded-lg mx-1"
@@ -191,7 +181,6 @@ export const TodosMain = () => {
         <div className="fixed bottom-1/4 right-0 ...">
           <button
             onClick={() => {
-              dispatch(reset());
               navigate("/createTodos");
             }}
             type="button"
@@ -214,10 +203,10 @@ export const TodosMain = () => {
               </svg>
             </span>
             <span className="text-white">Add Todo </span>
-            
           </button>
         </div>
       </div>
     </div>
   );
+  else return <div></div>;
 };

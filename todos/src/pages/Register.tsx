@@ -1,14 +1,10 @@
 import React from "react";
 import { Spinner } from "../components/Spinner";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../common/hooks/useTypedSelector";
+
 import { Link, useNavigate } from "react-router-dom";
-import { FC, useEffect, useState } from "react";
-import { register } from "../features/user/userSlice";
-import User from "../common/models/userModel";
-import { reset } from "../features/user/userSlice";
+import { FC, useState } from "react";
+import { useResgisterUserMutation } from "../features/api/apiSlice";
+import { UserRequest } from "../types/user/user";
 
 export const Register: FC = () => {
   const [formData, setFormData] = useState({
@@ -17,21 +13,9 @@ export const Register: FC = () => {
     password: "",
     passwordConfirmation: "",
   });
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error, auth, isSuccess } = useAppSelector(
-    (state) => state.user
-  );
-  useEffect(() => {
-    if (isSuccess || auth) {
-      navigate("/login");
-    } else if (error) {
-        console.log("everything is fine");
-      console.log(error);
-    }
-    dispatch(reset());
-  }, [isSuccess, navigate, error, dispatch, auth]);
-
+  const [resgisterUser, {isLoading: loading, isSuccess}] = useResgisterUserMutation();
+  
   const { name, email, password, passwordConfirmation } = formData;
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,15 +26,16 @@ export const Register: FC = () => {
       console.log("Passwords do not match");
       return;
     }
-
-    dispatch(register({ name, email, password } as User));
+    resgisterUser({name: name, email:email, password: password} as UserRequest);
   };
 
   if (loading) {
     return <div><Spinner/></div>;
   }
+  else if(isSuccess){
+    navigate('/login');
+  }
   return <div>
-    
     <div className="flex flex-col flex-1 items-center justify-center min-h-screen py-2 bg-gray-900">
         <div className="flex flex-col justify-center w-full max-w-sm px-4 py-8 bg-gray-800 shadow-lg rounded-lg">
             <div className="flex flex-col items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-tr from-primary-700 to-primary-800">

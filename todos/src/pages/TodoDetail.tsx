@@ -1,44 +1,26 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../common/hooks/useTypedSelector";
 import { useEffect, useState } from "react";
-import { deleteTodo, fetchTodos, reset } from "../features/todos/todosSlice";
 import { Spinner } from "../components/Spinner";
+import { useGetTodoQuery, useDeleteTodoMutation } from "../features/api/apiSlice";
+import { Todos } from "../features/todos/Todos";
 
 export const TodoDetail = () => {
   const { id } = useParams();
-  const { data, error, loading, isSuccess } = useAppSelector((state) => state.todos);
-  let todo: any = data.find((todo) => todo.id === id);
+  const { data : todo , error, loading, isSuccess } = useGetTodoQuery(id);
+  // use DeleteTodoMutation
+  const [deleteTodo, { isLoading, isError, isSuccess: isDeleteSuccess }] =
+    useDeleteTodoMutation();
+  
   // const navigate = useNavigate();
   const [deleteT, setDeleteT] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    console.log("todo detail page");
-    
-    if (error) {
-      console.log("error while fetching todo");
-      setDeleteT(false);
-      return ()=>{
-        dispatch(reset());
-      }
-    }
-    if (deleteT) {
-      console.log("successfully deleted")
-      setDeleteT(false);
-      navigate("/todos")
-    }
-    if (todo === undefined) {
-      navigate("/todos");
-    }
-  }, [navigate, todo, isSuccess, loading, error, deleteT, dispatch]);
-
-  const onDelete = () => {
+  
+  const onDelete = async () => {
     setDeleteT(true);
     console.log("delete todo");
-    dispatch(deleteTodo(todo.id));
-    
+    await deleteTodo(id);    
   };
 
   return (

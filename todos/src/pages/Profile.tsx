@@ -1,17 +1,11 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../common/hooks/useTypedSelector";
 import { useEffect, useState } from "react";
 import userImage from '../assets/user.png';
 
 export const Profile = () => {
 
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { loading, error, auth, isSuccess } = useAppSelector(
-    (state) => state.user
-  );
-
+  
   const curAuth = JSON.parse(localStorage.getItem("user") || "{}");
 
 
