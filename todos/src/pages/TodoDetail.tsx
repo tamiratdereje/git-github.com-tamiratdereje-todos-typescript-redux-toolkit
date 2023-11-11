@@ -1,27 +1,36 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
 import { useGetTodoQuery, useDeleteTodoMutation } from "../features/api/apiSlice";
-import { Todos } from "../features/todos/Todos";
 
 export const TodoDetail = () => {
   const { id } = useParams();
-  const { data : todo , error, loading, isSuccess } = useGetTodoQuery(id);
+  const { data : todo , error, isLoading: loading, isSuccess } = useGetTodoQuery(id);
   // use DeleteTodoMutation
-  const [deleteTodo, { isLoading, isError, isSuccess: isDeleteSuccess }] =
+  const [deleteTodo, { isLoading: deletedLoading, isError, isSuccess: isDeleteSuccess}] =
     useDeleteTodoMutation();
   
   // const navigate = useNavigate();
-  const [deleteT, setDeleteT] = useState(false);
   const navigate = useNavigate();
 
   
   const onDelete = async () => {
-    setDeleteT(true);
-    console.log("delete todo");
-    await deleteTodo(id);    
+    console.log("delete todo", id);
+    await deleteTodo(id).unwrap();    
   };
+  console.log("delete todo statis", isDeleteSuccess);
+
+
+  if (isDeleteSuccess) {
+    navigate("/todos");
+  }
+  if (loading){
+    return (
+      <div className="flex-1 p-10 text-xs text-white mx-auto bg-gray-900">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 items-center p-10  bg-gray-900 justify-center">

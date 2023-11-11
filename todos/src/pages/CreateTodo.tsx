@@ -3,10 +3,14 @@ import Datepicker from "tailwind-datepicker-react";
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {Todo} from "../types/todo/todo";
+import { Todo } from "../types/todo/todo";
 import { useParams } from "react-router-dom";
 import { Spinner } from "../components/Spinner";
-import { useAddTodoMutation, useGetTodoQuery } from "../features/api/apiSlice";
+import {
+  useAddTodoMutation,
+  useGetTodoQuery,
+  useUpdateTodoMutation,
+} from "../features/api/apiSlice";
 
 const options = {
   title: "Demo Title",
@@ -38,11 +42,24 @@ const options = {
 export const CreateTodo = () => {
   const navigate = useNavigate();
 
-  const auth  = JSON.parse(localStorage.getItem("user") || "{}");
-
   const { id } = useParams();
-  const [addTodo, { isLoading, isError, isSuccess: isAddSuccess }] = useAddTodoMutation();
-  const { data: todo, error, loading, isSuccess } = useGetTodoQuery(id);
+  const [
+    addTodo,
+    { isLoading: loading, isError, isSuccess: isAddSuccess, data: addTodoData },
+  ] = useAddTodoMutation();
+
+  const  { data: todo, error, isLoading, isSuccess } =
+    useGetTodoQuery(id);
+  const [
+    updateTodoTrigger,
+    {
+      data: updatedTodo,
+      error: updateError,
+      isLoading: updateLoading,
+      isSuccess: updateSuccess,
+    },
+  ] = useUpdateTodoMutation();
+  
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
   const [formData, setFormData] = useState({
@@ -51,10 +68,9 @@ export const CreateTodo = () => {
     status: "Not Started",
     priority: "Low",
   });
-  const [updateT, setUpdateT] = useState(false);
   const { description, category, status, priority } = formData;
   useEffect(() => {
-    if (id && !updateT) {
+    if (id) {
       if (todo) {
         setFormData({
           description: todo.description,
@@ -65,8 +81,7 @@ export const CreateTodo = () => {
         setDate(new Date(todo.dueDate));
       }
     }
-    
-  },[]);
+  }, [id, todo]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -78,36 +93,48 @@ export const CreateTodo = () => {
 
   const handleChange = (selectedDate: Date) => {
     setDate(selectedDate);
-    console.log(date);
   };
   const handleClose = (state: boolean) => {
     setShow(state);
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // if (id) {
-    //   setUpdateT(true);
-    //   addTodo({
-    //       id: id,
-    //       description: description,
-    //       category: category,
-    //       status: status,
-    //       priority: priority,
-    //       dueDate: date.toUTCString(),
-    //     } as Todo 
-    //   );
-    // } else {
-      addTodo({
-          description: description,
-          category: category,
-          status: status,
-          priority: priority,
-          dueDate: date.toUTCString(),
-        } as Todo 
+    if (id) {
+      await updateTodoTrigger({
+        id: id,
+        description: description,
+        category: category,
+        status: status,
+        priority: priority,
+        dueDate: date.toUTCString(),
+      } as Todo).unwrap();
+    } else {
+      console.log(
+        "inside add todo",
+        description,
+        category,
+        status,
+        priority,
+        date.toUTCString()
       );
-    // }
+      await addTodo({
+        description: description,
+        category: category,
+        status: status,
+        priority: priority,
+        dueDate: date.toUTCString(),
+      } as Todo).unwrap();
+      console.log("is add success", isAddSuccess, addTodoData);
+    }
   };
+  if (isAddSuccess && addTodoData) {
+    navigate("/todos");
+  }
+  if (updateSuccess && updatedTodo) {
+    console.log("updated todo",updateSuccess,  updatedTodo);
+    navigate(`/todos/${updatedTodo.id}`);
+  }
   return (
     <div className="flex-1 justify-items-center bg-gray-900">
       <form
@@ -211,7 +238,9 @@ export const CreateTodo = () => {
           </div>
         </div>
         {loading ? (
-          <div><Spinner/></div>
+          <div>
+            <Spinner />
+          </div>
         ) : (
           <div>
             (

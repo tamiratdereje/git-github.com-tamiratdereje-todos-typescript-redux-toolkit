@@ -3,10 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./app/App";
 import reportWebVitals from "./reportWebVitals";
-// import { Provider } from "react-redux";
-// import store from "./app/store";
-import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
-import { apiSlice } from "./features/api/apiSlice";
+
 import store from "./app/store";
 import { Provider } from "react-redux";
 const root = ReactDOM.createRoot(

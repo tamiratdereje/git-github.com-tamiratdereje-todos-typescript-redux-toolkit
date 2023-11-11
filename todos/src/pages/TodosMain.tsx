@@ -1,9 +1,6 @@
 import React from "react";
 import { Spinner } from "../components/Spinner";
-// import {
-//   useAppDispatch,
-//   useAppSelector,
-// } from "../common/hooks/useTypedSelector";
+
 import { useGetTodosQuery } from "../features/api/apiSlice";
 import { useNavigate } from "react-router-dom";
 import { Todo } from "../types/todo/todo";

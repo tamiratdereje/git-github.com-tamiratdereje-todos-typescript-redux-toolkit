@@ -13,7 +13,8 @@ export const Login: FC = () => {
   });
   const navigate = useNavigate();
 
-  const [loginUser, { isLoading, isError, isSuccess }, results] = useLoginUserMutation();
+  const [loginUser, { isLoading, isError, isSuccess, data }] =
+    useLoginUserMutation();
 
   const { email, password } = formData;
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,11 +22,17 @@ export const Login: FC = () => {
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await loginUser({ email: email, password: password } as LoginRequest);
-    if (results.data ) {
-      navigate("/todos");
-    }
+    await loginUser({
+      email: email,
+      password: password,
+    } as LoginRequest).unwrap();
+
+    console.log("inside login", data);
+    console.log("inside login", isSuccess);
   };
+  if (data) {
+    navigate("/todos");
+  }
 
   return (
     <div>
